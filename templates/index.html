@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script src="//code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Flask-SocketIO Ping test</h1>
+    <h2>IP Address/Host:</h2>
+    <form id="emit" method="POST" action='#'>
+        <input type="text" name="emit_data" id="emit_data" placeholder="Message">
+        <input type="submit" value="Ping">
+    </form>
+    <p id="log" style="color: red"></p>
+</body>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+        
+    var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+    socket.on('ping response', function(msg) {
+        $('#log').html('<b>Ping result:</b> ' + msg.data);
+    });
+    $('form#emit').submit(function(event) {
+        $('#log').html('<b>Pinging to:</b> ' + $('#emit_data').val());
+        socket.emit('ping event', {data: $('#emit_data').val()});
+        return false;
+    });
+});
+</script>
+</html>
